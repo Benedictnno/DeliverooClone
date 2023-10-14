@@ -41,7 +41,7 @@ export default function RootLayoutNav() {
             },
             headerRight: () => (
               <TouchableOpacity onPress={()=>(navigation.goBack())} > 
-                <Ionicons name="close-outline" size={20} color={Colors.primary} />          
+                <Ionicons name="close-outline" size={30} color={Colors.primary} />          
               </TouchableOpacity>
             ),
           }}
