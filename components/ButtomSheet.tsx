@@ -10,7 +10,7 @@ import { Link } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 export type Ref = BottomSheetModal;
-
+// AIzaSyBC5PZEEPOceLAAQvblghnkGSsue8-I8kM
 export default forwardRef<Ref>(function ButtomSheet(props, ref) {
   const snapPoints = useMemo(() => ["50%"], []);
 
@@ -48,7 +48,7 @@ export default forwardRef<Ref>(function ButtomSheet(props, ref) {
         </View>
 
         <Text style={styles.subheader}>Your Locatiion</Text>
-        <Link href={"/"} asChild>
+        <Link href={"/(model)/LocationSearch"} asChild>
           <TouchableOpacity>
             <View style={styles.item}>
               <Ionicons
@@ -70,8 +70,12 @@ export default forwardRef<Ref>(function ButtomSheet(props, ref) {
 
         <TouchableOpacity>
           <View style={styles.item}>
-            <Ionicons name="location-outline" size={20} color={Colors.medium} />
-            <Text style={{ flex: 1 }}>Current location</Text>
+            <Ionicons
+              name="stopwatch-outline"
+              size={20}
+              color={Colors.medium}
+            />
+            <Text style={{ flex: 1 }}>Now</Text>
             <Ionicons name="chevron-forward" size={20} color={Colors.primary} />
           </View>
         </TouchableOpacity>
