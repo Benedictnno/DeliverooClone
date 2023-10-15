@@ -10,7 +10,7 @@ import { Link } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 export type Ref = BottomSheetModal;
-// AIzaSyBC5PZEEPOceLAAQvblghnkGSsue8-I8kM
+
 export default forwardRef<Ref>(function ButtomSheet(props, ref) {
   const snapPoints = useMemo(() => ["50%"], []);
 
