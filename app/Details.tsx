@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  SectionList,
+} from "react-native";
 import React, { useLayoutEffect } from "react";
 import Colors from "@/constants/Colors";
 import ParallexScrollview from "@/components/ParallexScrollview";
@@ -8,10 +15,16 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default function Details() {
   const navigation = useNavigation();
+
+  const Data = restaurant.food.map((item, index) => ({
+    title: item.category,
+    data: item.meals,
+    index,
+  }));
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTransparent: true,
-      headerTitle: "",
+      headerTitle: " ",
       headerLeft: () => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -21,17 +34,11 @@ export default function Details() {
         </TouchableOpacity>;
       },
       headerRight: () => {
-        <View style={styles.bar} >
-          <TouchableOpacity
-          
-            style={styles.roundButton}
-          >
+        <View style={styles.bar}>
+          <TouchableOpacity style={styles.roundButton}>
             <Ionicons name="share-outline" size={24} color={Colors.primary} />
           </TouchableOpacity>
-          <TouchableOpacity
-          
-            style={styles.roundButton}
-          >
+          <TouchableOpacity style={styles.roundButton}>
             <Ionicons name="search-outline" size={24} color={Colors.primary} />
           </TouchableOpacity>
         </View>;
@@ -45,15 +52,36 @@ export default function Details() {
       <ParallexScrollview
         style={{ flex: 1 }}
         parallaxHeaderHeight={300}
-        stickyHeaderHeight={50}
+        stickyHeaderHeight={130}
         backgroundColor="#fff"
         renderStickyHeader={() => (
-          <View key={"sticky-header"} style={styles.stickySection}></View>
+          <View key={"sticky-header"} style={styles.stickySection}>
+            <Text style={styles.stickySectionText}>{restaurant.name}</Text>
+          </View>
         )}
-        renderBackground={() => <Image source={restaurant.img} />}
+        renderBackground={() => (
+          <Image
+            source={restaurant.img}
+            style={{ width: "100%", height: 300 }}
+          />
+        )}
       >
         <View style={styles.detailsContainer}>
-          <Text>Details</Text>
+          <Text style={styles.restaurantName}>{restaurant.name}</Text>
+          <Text style={styles.restaurantDescription}>
+            {restaurant.delivery} *{" "}
+            {restaurant.tags.map(
+              (tag, index) =>
+                `${tag}${index < restaurant.tags.length - 1 ? "," : " "}`
+            )}
+          </Text>
+          <Text style={styles.restaurantDescription}>{restaurant.about}</Text>
+          <SectionList
+            keyExtractor={(Item, index) => `${Item.name + index}`}
+            sections={Data}
+            scrollEnabled={false}
+            renderItem={({ item, index }) => <Text>{item.name}</Text>}
+          />
         </View>
       </ParallexScrollview>
     </>
