@@ -19,9 +19,8 @@ export const unstable_settings = {
   initialRouteName: "index",
 };
 
-
 export default function RootLayoutNav() {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   return (
     <BottomSheetModalProvider>
@@ -30,6 +29,7 @@ export default function RootLayoutNav() {
           name="index"
           options={{ header: () => <CustomHeader /> }}
         />
+
         <Stack.Screen
           name="(model)/Filter"
           options={{
@@ -40,12 +40,17 @@ export default function RootLayoutNav() {
               backgroundColor: Colors.lightGrey,
             },
             headerRight: () => (
-              <TouchableOpacity onPress={()=>(navigation.goBack())} > 
-                <Ionicons name="close-outline" size={30} color={Colors.primary} />          
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons
+                  name="close-outline"
+                  size={30}
+                  color={Colors.primary}
+                />
               </TouchableOpacity>
             ),
           }}
         />
+
         <Stack.Screen
           name="(model)/LocationSearch"
           options={{
@@ -56,8 +61,41 @@ export default function RootLayoutNav() {
               backgroundColor: Colors.lightGrey,
             },
             headerRight: () => (
-              <TouchableOpacity onPress={()=>(navigation.goBack())} > 
-                <Ionicons name="close-outline" size={30} color={Colors.primary} />          
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons
+                  name="close-outline"
+                  size={30}
+                  color={Colors.primary}
+                />
+              </TouchableOpacity>
+            ),
+          }}
+        />
+
+        <Stack.Screen
+          name="(model)/Dish"
+          
+          options={{
+            presentation: "modal",
+            headerTitle: " ",
+            // headerShadowVisible: false,
+            headerTransparent: true,
+           
+
+            headerLeft: () => (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: 20,
+                  padding: 6,
+                }}
+              >
+                <Ionicons
+                  name="close-outline"
+                  size={30}
+                  color={Colors.primary}
+                />
               </TouchableOpacity>
             ),
           }}

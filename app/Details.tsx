@@ -5,17 +5,30 @@ import {
   Image,
   TouchableOpacity,
   SectionList,
+  ListRenderItem,
 } from "react-native";
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import Colors from "@/constants/Colors";
 import ParallexScrollview from "@/components/ParallexScrollview";
 import { restaurant } from "@/assets/data/restaurant";
-import { useNavigation } from "expo-router";
+import { Link, useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function Details() {
   const navigation = useNavigation();
-
+  const [activeIndex, setActiveIndex] = useState<Number>(0);
+  const opacity = useSharedValue(0);
+  const animatedStyles = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+  }));
+  const scrollRef = useRef<ScrollView>(null);
+  const itemRef = useRef<TouchableOpacity[]>([]);
   const Data = restaurant.food.map((item, index) => ({
     title: item.category,
     data: item.meals,
@@ -47,9 +60,40 @@ export default function Details() {
     });
   }, []);
 
+  const renderItem: ListRenderItem<any> = ({ item, index }) => (
+    <Link href={{ pathname: "/(model)/Dish", params: { id: item.id } }} asChild>
+      <TouchableOpacity style={styles.item}>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.dish}> {item?.name} </Text>
+          <Text style={styles.dishText}> {item?.info} </Text>
+          <Text style={styles.dishText}> {item?.price} </Text>
+        </View>
+        <Image source={item?.img} style={styles.dishImage} />
+      </TouchableOpacity>
+    </Link>
+  );
+
+  function selectCategory(index: number) {
+    const selected = itemRef.current[index];
+    setActiveIndex(index);
+
+    selected.measure((x) => {
+      scrollRef.current?.scrollTo({ x: x - 16, y: 0, animated: true });
+    });
+  }
+
+  function onScroll(event: any) {
+    const y = event.nativeEvent.contentOffset.y;
+    if (y > 350) {
+      opacity.value = withTiming(1);
+    } else {
+      opacity.value = withTiming(0);
+    }
+  }
   return (
     <>
       <ParallexScrollview
+        scrollEvent={onScroll}
         style={{ flex: 1 }}
         parallaxHeaderHeight={300}
         stickyHeaderHeight={130}
@@ -77,13 +121,63 @@ export default function Details() {
           </Text>
           <Text style={styles.restaurantDescription}>{restaurant.about}</Text>
           <SectionList
+            contentContainerStyle={{ paddingBottom: 50 }}
             keyExtractor={(Item, index) => `${Item.name + index}`}
             sections={Data}
             scrollEnabled={false}
-            renderItem={({ item, index }) => <Text>{item.name}</Text>}
+            ItemSeparatorComponent={() => (
+              <View
+                style={{
+                  marginHorizontal: 20,
+                  height: 1,
+                  backgroundColor: Colors.grey,
+                }}
+              />
+            )}
+            SectionSeparatorComponent={() => (
+              <View style={{ height: 1, backgroundColor: Colors.grey }} />
+            )}
+            renderItem={renderItem}
+            renderSectionHeader={({ section: { title, index } }) => (
+              <Text style={styles.sectionHeader}>{title}</Text>
+            )}
           />
         </View>
       </ParallexScrollview>
+
+      <Animated.View style={[styles.stickySegments, animatedStyles]}>
+        <View style={styles.segmentsShadow}>
+          <ScrollView
+            ref={scrollRef}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ paddingHorizontal: 16 }}
+          >
+            {restaurant.food.map((item, index) => (
+              <TouchableOpacity
+                ref={(ref) => (itemRef.current[index] = ref!)}
+                key={index}
+                style={
+                  activeIndex === index
+                    ? styles.segmentButtonActive
+                    : styles.segmentButton
+                }
+                onPress={() => selectCategory(index)}
+              >
+                <Text
+                  style={
+                    activeIndex === index
+                      ? styles.segmentTextActive
+                      : styles.segmentText
+                  }
+                >
+                  {item.category}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      </Animated.View>
     </>
   );
 }
@@ -189,11 +283,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 4,
     borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10,
   },
   segmentTextActive: {
     color: "#fff",
     fontWeight: "bold",
     fontSize: 16,
+    textAlign: "center",
   },
   segmentScrollview: {
     paddingHorizontal: 16,
