@@ -19,6 +19,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { ScrollView } from "react-native-gesture-handler";
+import { useBasketStore } from "@/store/basketStore";
 
 export default function Details() {
   const navigation = useNavigation();
@@ -34,6 +35,8 @@ export default function Details() {
     data: item.meals,
     index,
   }));
+
+  const { items, total } = useBasketStore();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTransparent: true,
@@ -145,6 +148,7 @@ export default function Details() {
         </View>
       </ParallexScrollview>
 
+      {/* Sticky segment */}
       <Animated.View style={[styles.stickySegments, animatedStyles]}>
         <View style={styles.segmentsShadow}>
           <ScrollView
@@ -178,6 +182,19 @@ export default function Details() {
           </ScrollView>
         </View>
       </Animated.View>
+
+      {/* Footer Basket */}
+      {items > 0 && (
+        <View style={styles.footer}>
+          <Link href={"/Basket"} asChild>
+            <TouchableOpacity style={styles.fullButton}>
+              <Text style={styles.basket}>{items}</Text>
+              <Text style={styles.footerText}>View Basket</Text>
+              <Text style={styles.basketTotal}>Total : ${total}</Text>
+            </TouchableOpacity>
+          </Link>
+        </View>
+      )}
     </>
   );
 }

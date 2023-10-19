@@ -74,13 +74,11 @@ export default function RootLayoutNav() {
 
         <Stack.Screen
           name="(model)/Dish"
-          
           options={{
             presentation: "modal",
             headerTitle: " ",
             // headerShadowVisible: false,
             headerTransparent: true,
-           
 
             headerLeft: () => (
               <TouchableOpacity
@@ -96,6 +94,28 @@ export default function RootLayoutNav() {
                   size={30}
                   color={Colors.primary}
                 />
+              </TouchableOpacity>
+            ),
+          }}
+        />
+
+        <Stack.Screen
+          name="Basket"
+          options={{
+            headerTitle: "Basket ",
+            // headerShadowVisible: false,
+            // headerTransparent: true,
+
+            headerLeft: () => (
+              <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                style={{
+                  backgroundColor: "#fff",
+                  borderRadius: 20,
+                  padding: 6,
+                }}
+              >
+                <Ionicons name="arrow-back" size={30} color={Colors.primary} />
               </TouchableOpacity>
             ),
           }}
