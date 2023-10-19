@@ -15,7 +15,6 @@ export default function Basket() {
     service: 2.99,
     delivery: 5.99,
   };
-
   function checkOut() {
     setOrder(true);
     clearCart();

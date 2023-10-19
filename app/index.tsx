@@ -1,24 +1,27 @@
-import { View, Text ,StyleSheet} from 'react-native'
-import React from 'react'
-import Categories from '@/components/Categories'
-import Colors from '@/constants/Colors'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { ScrollView } from 'react-native-gesture-handler'
-import Resturants from '@/components/Resturants'
+import { View, Text, StyleSheet } from "react-native";
+import React from "react";
+import Categories from "@/components/Categories";
+import Colors from "@/constants/Colors";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native-gesture-handler";
+import Resturants from "@/components/Resturants";
+import registerNNPushToken from "native-notify";
 
 const Page = () => {
+  registerNNPushToken(13669, "dRLArJiRNvFrutlYczBXCK");
+
   return (
-    <SafeAreaView style={styles.container} >
-      <ScrollView contentContainerStyle={{paddingBottom:100}} >
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
         <Categories />
-        <Text style={styles.header} >Top Picks from your neighborhood</Text>
-        <Resturants/>
-        <Text style={styles.header} >Offers Near You</Text>
-        <Resturants/>
+        <Text style={styles.header}>Top Picks from your neighborhood</Text>
+        <Resturants />
+        <Text style={styles.header}>Offers Near You</Text>
+        <Resturants />
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -34,4 +37,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Page
+export default Page;
